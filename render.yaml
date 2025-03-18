@@ -3,8 +3,6 @@ services:
     type: web
     runtime: docker
     envVars:
-      - key: WEBSOCKET_ENABLED
-        value: "true"
       - key: SPRING_PROFILES_ACTIVE
         value: "prod"
     dockerfilePath: ./backend/Dockerfile
@@ -14,6 +12,9 @@ services:
   - name: nginx
     type: web
     runtime: docker
+    envVars:
+      - key: PORT
+        value: "10000"  # Nếu cần, Render sẽ cấp giá trị này
     dockerfilePath: ./nginx/Dockerfile
     plan: free
     region: oregon
