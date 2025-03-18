@@ -13,7 +13,8 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Lắng nghe cổng từ Render (không ép 8080 hoặc 8000)
+# Expose cổng 8080 để container có thể kết nối
+EXPOSE 8080
+
+# Lắng nghe trên PORT Render cấp
 CMD ["sh", "-c", "java -jar app.jar --server.port=${PORT} --server.address=0.0.0.0"]
-
-
