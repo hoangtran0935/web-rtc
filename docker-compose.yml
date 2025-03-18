@@ -12,7 +12,8 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    environment:
-      - PORT=10000  # Render sẽ tự động cấp phát port
+    ports:
+      - "10000:10000"
     depends_on:
       - springboot
+
