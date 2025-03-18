@@ -5,7 +5,7 @@ services:
     build: ./backend
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - PORT=${PORT}  # Cổng Render cấp động
+      - PORT=8080  # Cổng Render cấp động
     restart: always
     expose:
       - "8080"
