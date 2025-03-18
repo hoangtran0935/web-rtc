@@ -16,5 +16,5 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose cổng 8080 để container có thể kết nối
 EXPOSE 8080
 
-# Lắng nghe trên PORT Render cấp
-CMD ["sh", "-c", "java -jar app.jar --server.port=${PORT} --server.address=0.0.0.0"]
+# Lắng nghe trên PORT Render cấp (sử dụng ENTRYPOINT để truyền biến môi trường)
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080} --server.address=0.0.0.0"]

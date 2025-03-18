@@ -5,6 +5,8 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: "prod"
+      - key: PORT
+        value: "8080"  # ⚡️ Bắt buộc Spring Boot lắng nghe đúng port
     dockerfilePath: ./backend/Dockerfile
     plan: free
     region: oregon
@@ -13,6 +15,8 @@ services:
     type: web
     runtime: docker
     envVars:
+      - key: PORT
+        value: "80"  # ⚡️ Render luôn sử dụng port 80 cho HTTP
       - key: BACKEND_HOST
         value: "springboot"
       - key: BACKEND_PORT
