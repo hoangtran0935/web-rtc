@@ -11,8 +11,7 @@ public class WebSocketConfig {
     @Value("${socket.host}")
     private String host;
 
-    @Value("${socket.port}")
-    private int port;
+    private final int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
 
     @Bean
     public SocketIOServer socketIOServer() throws Exception {
