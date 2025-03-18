@@ -14,5 +14,6 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Lắng nghe cổng từ Render (không ép 8080 hoặc 8000)
-CMD ["sh", "-c", "java -jar app.jar --server.port=${PORT}"]
+CMD ["sh", "-c", "java -jar app.jar --server.port=${PORT} --server.address=0.0.0.0"]
+
 
