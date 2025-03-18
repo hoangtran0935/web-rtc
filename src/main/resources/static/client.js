@@ -1,4 +1,4 @@
-const SERVER_URL = "https://web-rtc-c3gc.onrender.com"; // Thay bằng URL của bạn trên Render
+const SERVER_URL = "wss://web-rtc-c3gc.onrender.com"; // Thay bằng URL của bạn trên Render
 
 // Khởi tạo kết nối WebSocket
 let socket = io.connect(SERVER_URL, { secure: true });
@@ -16,20 +16,21 @@ const iceServers = {
 };
 
 // Định nghĩa hàm kết nối WebRTC
+let peerConnection = null;
 function setupPeerConnection() {
-  const peerConnection = new RTCPeerConnection(iceServers);
+  if (!peerConnection) {
+    peerConnection = new RTCPeerConnection(iceServers);
 
-  // Xử lý sự kiện khi có ICE Candidate mới
-  peerConnection.onicecandidate = (event) => {
-    if (event.candidate) {
-      socket.emit("new-ice-candidate", event.candidate);
-    }
-  };
+    peerConnection.onicecandidate = (event) => {
+      if (event.candidate) {
+        socket.emit("new-ice-candidate", event.candidate);
+      }
+    };
 
-  // Khi kết nối thành công
-  peerConnection.onconnectionstatechange = () => {
-    console.log("Peer Connection State: ", peerConnection.connectionState);
-  };
+    peerConnection.onconnectionstatechange = () => {
+      console.log("Peer Connection State: ", peerConnection.connectionState);
+    };
+  }
 
   return peerConnection;
 }
@@ -63,10 +64,15 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
-  cors: { origin: "https://web-rtc-c3gc.onrender.com", credentials: true }
+  cors: {
+    origin: "*", // Nếu cần bảo mật hơn, thay bằng https://web-rtc-c3gc.onrender.com
+    methods: ["GET", "POST"],
+    credentials: true
+  }
 });
 
-app.use(cors({ origin: "https://web-rtc-c3gc.onrender.com", credentials: true }));
+
+//app.use(cors({ origin: "https://web-rtc-c3gc.onrender.com", credentials: true }));
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
@@ -77,7 +83,12 @@ io.on("connection", (socket) => {
 });
 
 // Khởi chạy server trên Render
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT; // Không đặt default là 8080
+if (!PORT) {
+  console.error("❌ Lỗi: PORT không được đặt!");
+  process.exit(1);
+}
+
 http.listen(PORT, () => {
-  console.log(`Server đang chạy trên cổng ${PORT}`);
+  console.log(`✅ Server đang chạy trên cổng ${PORT}`);
 });
