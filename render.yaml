@@ -1,0 +1,19 @@
+services:
+  - name: springboot
+    type: web
+    runtime: docker
+    envVars:
+      - key: WEBSOCKET_ENABLED
+        value: "true"
+      - key: SPRING_PROFILES_ACTIVE
+        value: "prod"
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    region: oregon
+
+  - name: nginx
+    type: web
+    runtime: docker
+    dockerfilePath: ./nginx/Dockerfile
+    plan: free
+    region: oregon
