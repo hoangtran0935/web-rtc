@@ -17,7 +17,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "10000:80"  # ⚡️ Render dùng HTTP, nên map vào 80 thay vì 10000
+      - "8001:80"  # ⚡️ Render dùng HTTP, nên map vào 80 thay vì 10000
     depends_on:
       - springboot
     restart: always  # ⚡️ Đảm bảo Nginx không bị dừng
