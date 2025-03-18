@@ -3,17 +3,16 @@ version: "3.8"
 services:
   springboot:
     build: ./backend
-    ports:
-      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - PORT=8080  # Sử dụng biến PORT cho Render
     restart: always
 
   nginx:
     image: nginx:latest
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    ports:
-      - "10000:10000"
+    environment:
+      - PORT=10000  # Render sẽ tự động cấp phát port
     depends_on:
       - springboot
